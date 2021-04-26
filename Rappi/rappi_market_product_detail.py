@@ -94,6 +94,7 @@ engine = create_engine('postgresql://'+config.DATABASE_CONFIG['user']+':'+config
 connection = engine.connect()
 
 result_stores = connection.execute(config.RAPPI_STORES_MARKET['query_category_prod']).fetchall()
+connection.close()
 
 #get_product(900025289, '21111')
 locales = balance_cargas()
@@ -131,5 +132,5 @@ output.seek(0)
 cur.copy_from(output, config.RAPPI_MARKET_PRODUCT['table_lz'], null="") # null values become ''
 conn.commit()
 print('HORA FIN: '+str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
-connection.close()
+
 

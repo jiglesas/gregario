@@ -10,7 +10,7 @@ import requests
 import json
 from sqlalchemy import create_engine, Column, MetaData, Table, DateTime, String, Integer, ForeignKey, BIGINT,TEXT,FLOAT,inspect, event
 
-id_vm = 6
+id_vm = 2
 api_key = 'IuimuMneIKJd3tapno2Ag1c1WcAES97j'
 result = []
 
@@ -30,13 +30,13 @@ def get_category():
     engine = create_engine('postgresql://'+config.DATABASE_CONFIG['user']+':'+config.DATABASE_CONFIG['password']+'@'+config.DATABASE_CONFIG['host']+':'+config.DATABASE_CONFIG['port']+'/'+config.DATABASE_CONFIG['dbname']
              , connect_args={'options': '-csearch_path={}'.format(config.DATABASE_CONFIG['schema'])})
     connection = engine.connect()
-    
     result_category = connection.execute(config.JUMBO_CATEGORY['query_category_prod']).fetchall()
+    connection.close()
     for rs in result_category:
         json_temp = json.dumps(rs[0])
         stores_in = json.loads(json_temp)
         categories.append(stores_in['category_url'])
-    connection.close()
+    
     return categories
 
 def balance_cargas():
@@ -104,7 +104,8 @@ def insert_db(data_in):
 #encabezado log
 print('Log VM-'+str(id_vm)+' Jumbo')
 print('HORA INICIO: '+str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
-log.insert_log('Start', 'Jumbo VM '+str(id_vm))
+id_log = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))+' - Jumbo VM '+str(id_vm)
+#log.insert_log('Start', 'Jumbo VM '+str(id_vm), id_log, datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
 store = balance_cargas()
 category = get_category()
@@ -119,7 +120,7 @@ for rs in range(0,1):
         while flag == True:
             i += 1
             
-            url = get_url('25',rc,i)
+            url = get_url(rs,rc,i)
             hed = {'x-api-key': api_key}
             y = requests.get(url, headers=hed)
 
@@ -166,7 +167,7 @@ for rs in range(0,1):
                                     status = 'Posible Quiebre'
                                     #print(status)
                             
-                            info = {'store_id': '25', 'category': rc, 'product_id': product_id, 'product_name': product_name,
+                            info = {'store_id': rs, 'category': rc, 'product_id': product_id, 'product_name': product_name,
                                     'product_code': product_code, 'brand': brand, 'product_url': product_url, 'status': status,
                                     'formato': formato, 'price': price, 'price_wo_offer': price_wo_offer, 'create_date': create_date,
                                     'offer': offer}
@@ -177,7 +178,7 @@ for rs in range(0,1):
     
 insert_db(result)
 print('HORA FIN: '+str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
-log.insert_log('End', 'Jumbo VM '+str(id_vm))
+log.insert_log('End', 'Jumbo VM '+str(id_vm), id_log, datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
      
 
             

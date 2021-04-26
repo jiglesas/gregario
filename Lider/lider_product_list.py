@@ -11,7 +11,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 from sqlalchemy import create_engine, Column, MetaData, Table, DateTime, String, Integer, ForeignKey, BIGINT,TEXT,FLOAT,inspect, event
 
-id_vm = 1
+id_vm = 6
 #encabezado log
 print('Log VM-'+str(id_vm))
 print('HORA INICIO: '+str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
@@ -27,8 +27,7 @@ def insert_db(informacion):
 
   
     df.head(0).to_sql(config.LIDER_PRODUCT_LIST['table_lz'], engine, if_exists='append',index=False)
-   
-                     
+                
     conn = engine.raw_connection()
     cur = conn.cursor()
     output = io.StringIO()
@@ -126,8 +125,8 @@ def pick_store(inicio, fin):
     options = webdriver.ChromeOptions()
     options.add_argument('--ignore-certificate-errors')
     options.add_argument("--test-type")
-    #options.add_argument('start-maximized')
-    options.add_argument('--headless')
+    options.add_argument('start-maximized')
+    #options.add_argument('--headless')
     #driver = webdriver.Chrome('./chromedriver.exe', options=options)
     driver = webdriver.Chrome(options=options)
     driver.get('https://www.lider.cl/supermercado/')
@@ -184,7 +183,7 @@ def pick_store(inicio, fin):
             region_position = stores_data['region_position']
             commune_position = stores_data['commune_position']
             store_position = stores_data['store_position']
-            store_name = stores_data['store_name']
+            store_name = stores_data['store_id']
             #print(store_id)
            
             #pincha el boton carrito de compra

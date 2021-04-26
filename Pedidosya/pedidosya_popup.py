@@ -8,7 +8,7 @@ import io
 import config
 from sqlalchemy import create_engine, Column, MetaData, Table, DateTime, String, Integer, ForeignKey, BIGINT,TEXT,FLOAT,inspect, event
 
-id_vm = 6
+id_vm = 1
 
 #url = 'https://www.pedidosya.cl/profile/getProductModal?id=17619685&discount=0&menusection=menu&sectionName=Bebidas&sectionTags=&bt=RESTAURANT&cr=&partnerId=112593'
 def get_url(product_id, category_name, tipo, store_id):

@@ -9,7 +9,7 @@ import requests
 from datetime import datetime
 from sqlalchemy import create_engine, Column, MetaData, Table, DateTime, String, Integer, ForeignKey, BIGINT,TEXT,FLOAT,inspect, event
 
-id_vm = 2
+id_vm = 3
 
 def create_url(lat,lng):
     link = 'https://services.rappi.cl/api/sidekick/base-crack/principal?lng='+lng+'&lat='+lat
@@ -79,7 +79,7 @@ def insert_db(def_in):
     
     engine = create_engine('postgresql://'+config.DATABASE_CONFIG['user']+':'+config.DATABASE_CONFIG['password']+'@'+config.DATABASE_CONFIG['host']+':'+config.DATABASE_CONFIG['port']+'/'+config.DATABASE_CONFIG['dbname']
          , connect_args={'options': '-csearch_path={}'.format(config.DATABASE_CONFIG['schema'])})
-    connection = engine.connect()
+
     df.head(0).to_sql(config.RAPPI_STORES_CONVENIENCE['table_lz'], engine, if_exists='append',index=False)                   
     conn = engine.raw_connection()
     cur = conn.cursor()
@@ -88,7 +88,6 @@ def insert_db(def_in):
     output.seek(0)
     cur.copy_from(output, config.RAPPI_STORES_CONVENIENCE['table_lz'], null="") # null values become ''
     conn.commit()
-    connection.close()
     result = []
     return
 
@@ -147,6 +146,7 @@ engine = create_engine('postgresql://'+config.DATABASE_CONFIG['user']+':'+config
 connection = engine.connect()
 
 coordenadas = connection.execute(config.GEO['query_geo']).fetchall()
+connection.close()
 subcord = balance_cargas(coordenadas)
 print(len(subcord))
 i = 0

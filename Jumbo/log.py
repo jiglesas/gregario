@@ -7,11 +7,11 @@ import config
 from sqlalchemy import create_engine, Column, MetaData, Table, DateTime, String, Integer, ForeignKey, BIGINT,TEXT,FLOAT,inspect, event
 
 
-def insert_log(tipo, scraper):
+def insert_log(tipo, scraper, id_log, time):
     engine = create_engine('postgresql://'+config.DATABASE_CONFIG['user']+':'+config.DATABASE_CONFIG['password']+'@'+config.DATABASE_CONFIG['host']+':'+config.DATABASE_CONFIG['port']+'/'+config.DATABASE_CONFIG['dbname']
          , connect_args={'options': '-csearch_path={}'.format('ctrl')})
 
-    create_log = "INSERT INTO ctrl.scrapers_logs VALUES (clock_timestamp(), '"+str(tipo)+": Scraper "+str(scraper)+"');"
+    create_log = "INSERT INTO ctrl.scrapers_logs VALUES ('"+str(time)+"', '"+str(tipo)+": Scraper "+str(scraper)+"', '"+str(id_log)+"');"
 
     #connection = engine.connect()
     conn = engine.raw_connection()

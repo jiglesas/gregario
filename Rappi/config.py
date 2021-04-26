@@ -90,7 +90,7 @@ GEO_MX = {
 
 GEO = {
     #'query_geo':"select * from scrapinghub.geolocation_new_process where region = 'Metropolitana'", 
-    'query_geo':"select * from scrapinghub.geolocation_new_process where commune in ('Concepción', 'Viña del Mar', 'temuco', 'Antofagasta', 'La Serena', 'Iquique', 'Rancagua', 'Coquimbo', 'Valparaiso', 'Hualpén', 'Talcahuano', 'Penco', 'San Pedro de la Paz', 'Concón', 'Quilpué', 'Villa Alemana', 'Padre Las Casas', 'Machalí', 'Yungay')",
+    'query_geo':"select * from scrapinghub.geolocation_petrobras_pedidosya_faltantes",
     'table_lz': 'geolocation_mx'
 }
 
@@ -108,7 +108,7 @@ RAPPI_MARKET_PRODUCT = {
 }
 
 RAPPI_RESTAURANT_PRODUCT = {
-    'query_stores':"select distinct store_id, lat, lng from landzone.rappi_stores_detail",  
+    'query_stores':"select distinct store_id, lat, lng from landzone.rappi_stores_detail where store_id not in (select distinct store_id from landzone.rappi_restaurant_product rrp )",  
     'table_lz': 'rappi_restaurant_product'
 }
 

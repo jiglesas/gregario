@@ -15,7 +15,7 @@ from pretty_html_table import build_table
 def send_email(hour, date, company, table_in):
     file = "LEV "+company+" "+date+".xlsx"
     #configuracion mensaje
-    recipients = [ 'jiglesias@gregario.cl', 'JJerez@proa.cl', 'cnovoa@proa.cl', 'sdelajara@proa.cl', 'cristobal@gregario.cl', 'ignacio@gregario.cl']
+    recipients = [ 'jiglesias@gregario.cl', 'ignacio@gregario.cl', 'cristobal@gregario.cl', 'sdelajara@proa.cl', 'cnovoa@proa.cl', 'JJerez@proa.cl']
     mensaje = MIMEMultipart("plain")
     mensaje["From"]="reportes@gregario.cl"
     mensaje["To"]= ", ".join(recipients)

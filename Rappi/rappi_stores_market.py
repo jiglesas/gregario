@@ -74,7 +74,6 @@ def insert_db(info_in):
     output.seek(0)
     cur.copy_from(output, config.RAPPI_STORES_MARKET['table_lz'], null="") # null values become ''
     conn.commit()
-    connection.close()
     result=[]
     return
     
@@ -86,6 +85,7 @@ connection = engine.connect()
 
 #todas las reegiones desde tabla
 coordenadas = connection.execute(config.GEO['query_geo']).fetchall()
+connection.close()
 print(len(coordenadas))
 for cord in coordenadas:
     get_stores(str(cord['new_lat']), str(cord['new_lng']))

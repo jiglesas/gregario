@@ -13,18 +13,21 @@ from sqlalchemy import create_engine, Column, MetaData, Table, DateTime, String,
 
 id_vm = 2
 #obtiene las tiendas desde la db
-def get_product(store_name):
+def get_product(store_id):
     engine = create_engine('postgresql://'+config.DATABASE_CONFIG['user']+':'+config.DATABASE_CONFIG['password']+'@'+config.DATABASE_CONFIG['host']+':'+config.DATABASE_CONFIG['port']+'/'+config.DATABASE_CONFIG['dbname']
              , connect_args={'options': '-csearch_path={}'.format(config.DATABASE_CONFIG['schema'])})
     connection = engine.connect()
     query = """
-            select distinct 
+            select 
             	a.product_number 
-            from 
-            	history.lider_product_detail a
+            from
+            	history.lider_product_list a
             where 
-
-                a.store_id = '"""+store_name+"""'"""
+            	a.load_date::date >= now() + interval '- 10 days'
+            	and a.store_id = '"""+store_id+"""'
+            group by 
+            	1
+            """
     
 
             
@@ -104,7 +107,7 @@ def get_status(store_id_in, store_name_in):
     url_1 = 'https://www.lider.cl/supermercado/includes/inventory/inventoryInformation.jsp?productNumbers='
     url_2 = '&useProfile=true&consolidate=false&storeIds='+str(store_id_in)
     
-    products = get_product(store_name_in)
+    products = get_product(str(store_id_in))
     stores_num = ''
     
     #limitador de productos para no ser bloqueado

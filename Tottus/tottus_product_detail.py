@@ -8,7 +8,7 @@ import requests
 from datetime import datetime
 from sqlalchemy import create_engine, Column, MetaData, Table, DateTime, String, Integer, ForeignKey, BIGINT,TEXT,FLOAT,inspect, event
 
-id_vm = 1
+id_vm = 4
 result = []
 #api sample
 #https://www.tottus.cl/api/product-search/by-category-slug?slug=carnes-cat0101&sort=recommended_web&channel=Regular_Delivery_RM_3&page=1&perPage=1000
@@ -87,9 +87,8 @@ def balance_cargas():
     return sublocal
 
 #encabezado log
-print('Log VM-'+str(id_vm)+' Tottus')
+#log.insert_log('Start', 'Tottus-'+str(id_vm))
 print('HORA INICIO: '+str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
-log.insert_log('Start', 'Tottus')
 
 #conexion a la bd
 engine = create_engine('postgresql://'+config.DATABASE_CONFIG['user']+':'+config.DATABASE_CONFIG['password']+'@'+config.DATABASE_CONFIG['host']+':'+config.DATABASE_CONFIG['port']+'/'+config.DATABASE_CONFIG['dbname']
@@ -128,7 +127,6 @@ conn.commit()
 
 connection.close()
 print('HORA Fin: '+str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
-log.insert_log('End', 'Tottus')
-
+#log.insert_log('End', 'Tottus-'+str(id_vm))
 
 
